@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.lang.Math;
 
 public class MyDES {
     public static void main(String[] args){
@@ -157,35 +158,44 @@ public class MyDES {
 
     public static String decrypt(String toDecrypt, int key) {
         int length = toDecrypt.length();
-        print("length");
-        System.out.println(length);
+        // print("length");
+        // System.out.println(length);
 
         char[] encryptedStringAsChar = toDecrypt.toCharArray();
-        print("encr str");
-        print(new String(encryptedStringAsChar));
+        // print("encr str");
+        // print(new String(encryptedStringAsChar));
 
-        char[][] D = populateCharArray(encryptedStringAsChar, 20, (key/10)+1);
-        print("array D");
+        char[][] D = populateCharArray(encryptedStringAsChar, (key/10)+1, 20);
+        // print("array D");
         // printArray(D);
 
         char[][] D2 = transpose(D);
-        print("array D2");
+        // print("array D2");
         // printArray(D2);
 
         char[] interim = makeCharFromTranspose(D2, length);
-        print("interim");
-        print(new String(interim));
+        // print("interim");
+        // print(new String(interim));
 
         char[] reverseCaesar = new char[length];
         for(int i = 0; i < reverseCaesar.length; i++) {
-            int newChar = (interim[i] - key) % 128;
+            int newChar = Math.abs((interim[i] - key) % 128);
+            System.out.println(newChar);
             reverseCaesar[i] = (char) newChar;
         }
-        print("reverse Caesar");
-        print(new String(reverseCaesar));
+        // print("reverse Caesar");
+        // print(new String(reverseCaesar));
 
-        // char[][] D3 = populateCharArray(reverseCaesar, (key/10));
+        char[][] D3 = populateCharArray(reverseCaesar, (key/10), 20);
+        // print("D3");
+        // printArray(D3);
 
+        char[][] D4 = transpose(D3);
+        // print("D4");
+        // printArray(D4);
+
+        char[] decrypted = makeCharFromTranspose(D4, length);
+        print(new String(decrypted));
         return "done";
     }
 
